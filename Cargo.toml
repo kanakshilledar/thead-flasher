@@ -1,0 +1,11 @@
+[package]
+name = "thead-flasher"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = "4.5.32"
+log = "0.4.26"
+colog = "1.3.0"
+nix = { version = "0.29.0", features = ["user"] }
+rusb = "0.9.4"
