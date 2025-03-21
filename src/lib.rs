@@ -1,6 +1,6 @@
 use log::{error, info};
 use nix::unistd::Uid;
-use rusb;
+use nusb;
 use std::path::PathBuf;
 use std::process::Command;
 use std::{thread, time};
@@ -27,15 +27,14 @@ fn add_delay(seconds: u64) {
 }
 
 pub fn check_board_connected() -> bool {
-    let devices = rusb::devices().unwrap();
-    for device in devices.iter() {
-        let device_desc = device.device_descriptor().unwrap();
-        if device_desc.vendor_id() == 0x2345 && device_desc.product_id() == 0x7654 {
-            info!("board found!");
-            return true;
-        }
+    let device = nusb::list_devices()
+        .unwrap()
+        .find(|dev| dev.vendor_id() == 0x2345 && dev.product_id() == 0x7654);
+    if device.is_some() {
+        true
+    } else {
+        false
     }
-    false
 }
 
 pub fn flash_uboot(uboot: PathBuf) {
